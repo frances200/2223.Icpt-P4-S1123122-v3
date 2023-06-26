@@ -1,0 +1,243 @@
+.LC0:
+        .string "seconde"       ; LC0 komt overeen met "seconde" (lijn 33)
+.LC1:
+        .string "seconden"      ; LC1 komt overeen met "seconden" (lijn 33)
+.LC2:
+        .string "minuut"        ; LC2 komt overeen met "minuut" (lijn 31)
+.LC3:
+        .string "minuten"       ; LC3 komt overeen met "minuten" (lijn 31)
+.LC4:
+        .string "uur"           ; LC4 komt overeen met "uur" (lijn 29)
+.LC5:
+        .string "uren"          ; LC5 komt overeen met "uren" (lijn 29)
+.LC6:
+        .string "dag"           ; LC6 komt overeen met "dag" (lijn 27)
+.LC7:
+        .string "dagen"         ; LC7 komt overeen met "dagen" (lijn 27)
+.LC8:
+        .string "maand"         ; LC8 komt overeen met "maand" (lijn 25)
+.LC9:
+        .string "maanden"       ; LC9 komt overeen met "maanden" (lijn 25)
+.LC10:
+        .string "%d jaar, %d %s, %d %s, %d %s, %d %s en %d %s.\n"
+                                ; LC10 komt overeen met printf (lijn 22)
+convertSeconds(int):
+        push    rbp
+        mov     rbp, rsp
+        sub     rsp, 48
+
+        ; Het begin van de functie convertSeconds(int) (lijn 5)
+
+        ; years = seconds / (365 * 24 * 60 * 60) (lijn 7)
+        mov     DWORD PTR [rbp-36], edi
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, 1142465659
+        shr     rdx, 32
+        mov     ecx, edx
+        sar     ecx, 23
+        cdq
+        mov     eax, ecx
+        sub     eax, edx
+        mov     DWORD PTR [rbp-4], eax
+
+        ; years = months = seconds / (30 * 24 * 60 * 60) (lijn 10)
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, 1142465659
+        shr     rdx, 32
+        mov     ecx, edx
+        sar     ecx, 23
+        cdq
+        sub     ecx, edx
+        imul    edx, ecx, 31536000
+        sub     eax, edx
+        mov     DWORD PTR [rbp-36], eax
+
+        ; days = seconds / (24 * 60 * 60) (lijn 13)
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, 1737499857
+        shr     rdx, 32
+        mov     ecx, edx
+        sar     ecx, 20
+        cdq
+        mov     eax, ecx
+        sub     eax, edx
+        mov     DWORD PTR [rbp-8], eax
+
+        ; hours = seconds / (60 * 60) (lijn 16)
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, 1737499857
+        shr     rdx, 32
+        mov     ecx, edx
+        sar     ecx, 20
+        cdq
+        sub     ecx, edx
+        imul    edx, ecx, 2592000
+        sub     eax, edx
+        mov     DWORD PTR [rbp-36], eax
+
+        ; minutes = seconds / 60 (lijn 19)
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, -1037155065
+        shr     rdx, 32
+        add     edx, eax
+        mov     ecx, edx
+        sar     ecx, 16
+        cdq
+        mov     eax, ecx
+        sub     eax, edx
+        mov     DWORD PTR [rbp-12], eax
+
+        ; printf("%d jaar, %d %s, %d %s, %d %s, %d %s en %d %s.\n", ...) (lijn 22)
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, -1037155065
+        shr     rdx, 32
+        add     edx, eax
+        mov     ecx, edx
+        sar     ecx, 16
+        cdq
+        sub     ecx, edx
+        imul    edx, ecx, 86400
+        sub     eax, edx
+        mov     DWORD PTR [rbp-36], eax
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, -1851608123
+        shr     rdx, 32
+        add     edx, eax
+        mov     ecx, edx
+        sar     ecx, 11
+        cdq
+        mov     eax, ecx
+        sub     eax, edx
+        mov     DWORD PTR [rbp-16], eax
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, -1851608123
+        shr     rdx, 32
+        add     edx, eax
+        mov     ecx, edx
+        sar     ecx, 11
+        cdq
+        sub     ecx, edx
+        imul    edx, ecx, 3600
+        sub     eax, edx
+        mov     DWORD PTR [rbp-36], eax
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, -2004318071
+        shr     rdx, 32
+        add     edx, eax
+        mov     ecx, edx
+        sar     ecx, 5
+        cdq
+        mov     eax, ecx
+        sub     eax, edx
+        mov     DWORD PTR [rbp-20], eax
+        mov     eax, DWORD PTR [rbp-36]
+        movsx   rdx, eax
+        imul    rdx, rdx, -2004318071
+        shr     rdx, 32
+        add     edx, eax
+        mov     ecx, edx
+        sar     ecx, 5
+        cdq
+        sub     ecx, edx
+        imul    edx, ecx, 60
+        sub     eax, edx
+        mov     DWORD PTR [rbp-36], eax
+        cmp     DWORD PTR [rbp-36], 1
+        jne     .L2
+        mov     ecx, OFFSET FLAT:.LC0
+        jmp     .L3
+.L2:
+        mov     ecx, OFFSET FLAT:.LC1
+.L3:
+        cmp     DWORD PTR [rbp-20], 1
+        jne     .L4
+        mov     r9d, OFFSET FLAT:.LC2
+        jmp     .L5
+.L4:
+        mov     r9d, OFFSET FLAT:.LC3
+.L5:
+        cmp     DWORD PTR [rbp-16], 1
+        jne     .L6
+        mov     r8d, OFFSET FLAT:.LC4
+        jmp     .L7
+.L6:
+        mov     r8d, OFFSET FLAT:.LC5
+.L7:
+        cmp     DWORD PTR [rbp-12], 1
+        jne     .L8
+        mov     r10d, OFFSET FLAT:.LC6
+        jmp     .L9
+.L8:
+        mov     r10d, OFFSET FLAT:.LC7
+.L9:
+        cmp     DWORD PTR [rbp-8], 1
+        jne     .L10
+        mov     edi, OFFSET FLAT:.LC8
+        jmp     .L11
+.L10:
+        mov     edi, OFFSET FLAT:.LC9
+.L11:
+        mov     esi, DWORD PTR [rbp-12]
+        mov     edx, DWORD PTR [rbp-8]
+        mov     eax, DWORD PTR [rbp-4]
+        push    rcx
+        mov     ecx, DWORD PTR [rbp-36]
+        push    rcx
+        push    r9
+        mov     ecx, DWORD PTR [rbp-20]
+        push    rcx
+        push    r8
+        mov     ecx, DWORD PTR [rbp-16]
+        push    rcx
+        mov     r9, r10
+        mov     r8d, esi
+        mov     rcx, rdi
+        mov     esi, eax
+        mov     edi, OFFSET FLAT:.LC10
+        mov     eax, 0
+        call    printf
+        add     rsp, 48
+        nop
+        leave
+        ret
+.LC11:
+        .string "Voer een aantal seconden in: "
+        ; LC11 komt overeen met "Voer een aantal seconden in: " (lijn 40)
+.LC12:
+        .string "%d"
+        ; LC12 komt overeen met "%d" (lijn 41)
+main:
+        push    rbp
+        mov     rbp, rsp
+        sub     rsp, 16
+
+        ; printf("Voer een aantal seconden in: ") (lijn 40)
+        mov     edi, OFFSET FLAT:.LC11
+        mov     eax, 0
+        call    printf
+
+        lea     rax, [rbp-4]
+        mov     rsi, rax
+
+        ; scanf("%d", &input) (lijn 41)
+        mov     edi, OFFSET FLAT:.LC12
+        mov     eax, 0
+        call    __isoc99_scanf
+
+        mov     eax, DWORD PTR [rbp-4]
+        mov     edi, eax
+
+        ; convertSeconds(input) (lijn 43)
+        call    convertSeconds(int)
+        mov     eax, 0
+        leave
+        ret
